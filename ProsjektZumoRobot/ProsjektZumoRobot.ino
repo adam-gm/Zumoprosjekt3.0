@@ -128,11 +128,6 @@ void loop()
         changeStateTo(S_EVADE_OBJECT_TURN_RIGHT);
        }
        
-       else
-       {
-        
-       }
-       
       }
 
     break;
@@ -179,11 +174,7 @@ void loop()
        {
         changeStateTo(S_EVADE_OBJECT_TURN_RIGHT);
        }
-
-       else
-       {
-        
-       }
+       
     break;
 
     case S_TURN_RIGHT:
@@ -227,10 +218,6 @@ void loop()
         changeStateTo(S_EVADE_OBJECT_TURN_RIGHT);
        }
        
-       else
-       {
-        
-       }
     break;
 
     case S_EVADE_OBJECT:
@@ -267,12 +254,7 @@ void loop()
        {
         changeStateTo(S_TURN_LEFT);
        }
-
-      else
-      {
-        
-      }
-      
+       
     break;
 
     case S_EVADE_OBJECT_TURN_LEFT:
@@ -311,10 +293,6 @@ void loop()
         changeStateTo(S_TURN_LEFT);
        }
 
-      else
-      {
-        
-      }
     break;
 
     case S_EVADE_OBJECT_TURN_RIGHT:
@@ -353,10 +331,6 @@ void loop()
         changeStateTo(S_TURN_LEFT);
        }
 
-      else
-      {
-        
-      }
     break;
   }
 
@@ -403,6 +377,8 @@ void loop()
 
 void waitForButtonAndCountDown()
 {
+  turnLedOff(RED_LED);
+  turnLedOff(GREEN_LED);
   button.waitForButton(); // Starts calibration for the robot if button is pressed.
   myTimer.start(5000); // Starts a 5 second timer.
 
@@ -417,6 +393,12 @@ void waitForButtonAndCountDown()
   buzzer.playNote(NOTE_C(3), 200, 15);
   delay(350);
   buzzer.playNote(NOTE_C(3), 200, 15);
+  delay(300);
+  buzzer.playNote(NOTE_A(6), 200, 15);
+  delay(500);
+  buzzer.playNote(NOTE_B(6), 200, 15);
+  delay(500);
+  buzzer.playNote(NOTE_B(4), 200, 15);
   
   /*
   digitalWrite(LED, HIGH);
