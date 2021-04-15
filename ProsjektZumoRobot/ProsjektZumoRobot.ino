@@ -20,9 +20,9 @@ const int ECHO_PIN = A3;           //connects to the echo pin on the distance se
 #define QTR_THRESHOLD  500 // 1500 microseconds
   
 // these might need to be tuned for different motor types
-#define REVERSE_SPEED     150 // 0 is stopped, 400 is full speed
-#define TURN_SPEED        150
-#define FORWARD_SPEED     150
+#define REVERSE_SPEED     200 // 0 is stopped, 400 is full speed
+#define TURN_SPEED        200
+#define FORWARD_SPEED     200
 #define REVERSE_DURATION  200 // ms
 #define TURN_DURATION     300 // ms
 
@@ -50,6 +50,9 @@ float distance;
 
 // Variable to hold maximum distance from object
 float chosenDistanceObject = 5.0;
+
+// Global variable
+bool variable;
 
 // Defining variable which uses the Timer-class.
 Timer myTimer;
@@ -110,7 +113,7 @@ void loop()
        }
 
        // Checks zumo robots distance to an other object.
-       if(checkIfAvoidObject() == true)
+       else if(checkIfAvoidObject() == true)
        {
         changeStateTo(S_EVADE_OBJECT);
        }
@@ -535,10 +538,8 @@ void blinkLED(int ledPin)
 }
 
 // Functions to decide which state the robot should be in
-
 bool checkIfFreeDrive()
 {
-  int variable;
   if(distance > chosenDistanceObject)
      {
        if ((sensor_values[0] > QTR_THRESHOLD) and (sensor_values[5] > QTR_THRESHOLD))
@@ -551,13 +552,16 @@ bool checkIfFreeDrive()
            variable = false;
          }
      }
+    else
+       {
+        variable = false;
+       } 
 
     return variable;
 }
 
 bool checkIfTurnRight()
 {
-  int variable;
   if((sensor_values[0] < QTR_THRESHOLD) and (distance > chosenDistanceObject ))
    {
     variable = true;  
@@ -571,7 +575,6 @@ bool checkIfTurnRight()
 
 bool checkIfTurnLeft()
 {
-  int variable;
  if((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
    {
     variable = true;
@@ -585,7 +588,6 @@ bool checkIfTurnLeft()
 
 bool checkIfAvoidObject()
 {
-  int variable;
   if(distance <= chosenDistanceObject)
     {
      if((sensor_values[5] > QTR_THRESHOLD) and (sensor_values[0] > QTR_THRESHOLD))
@@ -597,26 +599,28 @@ bool checkIfAvoidObject()
       variable = false;
      }
     }
+   else
+      {
+       variable = false;
+      } 
   return variable;
 }
 
 bool checkIfAvoidObjectTurnRight()
 {
-  int variable;
   if((sensor_values[0] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
     {
-     variable = true;
+      variable = true;
     }
   else
-  {
-    variable = false;
-  }
+    {
+      variable = false;
+    }
   return variable;
 }
 
 bool checkIfAvoidObjectTurnLeft()
 {
-  int variable;
   if((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
     {
      variable = true;
