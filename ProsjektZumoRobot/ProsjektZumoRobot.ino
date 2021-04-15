@@ -332,44 +332,6 @@ void loop()
 
     break;
   }
-
-  /*
-  if (button.isPressed())
-  {
-    // if button is pressed, stop and wait for another press to go again
-    motors.setSpeeds(0, 0);
-    button.waitForRelease();
-    waitForButtonAndCountDown();
-  }
-   
-
-  sensors.read(sensor_values);
-  
-  if (sensor_values[0] > QTR_THRESHOLD)
-  {
-    // if leftmost sensor detects line, reverse and turn to the right
-    motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
-    delay(REVERSE_DURATION);
-    motors.setSpeeds(TURN_SPEED, -TURN_SPEED);
-    delay(TURN_DURATION);
-    motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
-  }
-  else if (sensor_values[5] > QTR_THRESHOLD)
-  {
-    // if rightmost sensor detects line, reverse and turn to the left
-    motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
-    delay(REVERSE_DURATION);
-    motors.setSpeeds(-TURN_SPEED, TURN_SPEED);
-    delay(TURN_DURATION);
-    motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
-  }
-  else
-  {
-    // otherwise, go straight
-    motors.setSpeeds(REVERSE_SPEED, REVERSE_SPEED);
-  }
-  */
-  
 }
 
 // ------------------FUNCTIONS-------------------------------
@@ -382,22 +344,6 @@ void waitForButtonAndCountDown()
   myTimer.start(5000); // Starts a 5 second timer.
   
   playStartingMelody();
-  
-  /*
-  digitalWrite(LED, HIGH);
-  button.waitForButton();
-  digitalWrite(LED, LOW);
-   
-  // play audible countdown
-  for (int i = 0; i < 3; i++)
-  {
-    delay(1000);
-    buzzer.playNote(NOTE_G(3), 200, 15);
-  }
-  delay(1000);
-  buzzer.playNote(NOTE_G(4), 500, 15);  
-  delay(1000);
-  */
 }
 
 // Function for changing system-state.
