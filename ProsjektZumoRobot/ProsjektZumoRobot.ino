@@ -110,20 +110,17 @@ void loop()
        }
 
        // Checks zumo robots distance to an other object.
-       else if(distance <= chosenDistanceObject)
+       if(checkIfAvoidObject() == true)
        {
-        if((sensor_values[5] > QTR_THRESHOLD) and (sensor_values[0] > QTR_THRESHOLD))
-        {
-          changeStateTo(S_EVADE_OBJECT);
-        }
+        changeStateTo(S_EVADE_OBJECT);
        }
 
-       else if((distance <= chosenDistanceObject) and (sensor_values[5] < QTR_THRESHOLD))
+       else if(checkIfAvoidObjectTurnLeft() == true)
        {
         changeStateTo(S_EVADE_OBJECT_TURN_LEFT);
        }
 
-       else if ((distance <= chosenDistanceObject) and (sensor_values[0] < QTR_THRESHOLD))
+       else if (checkIfAvoidObjectTurnRight() == true)
        {
         changeStateTo(S_EVADE_OBJECT_TURN_RIGHT);
        }
@@ -154,7 +151,7 @@ void loop()
       sensors.read(sensor_values); // Checks which color-surface the robot is driving on.
       distance = getDistance();
       
-      if((sensor_values[0] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
+      if(checkIfTurnRight() == true)
       {
        changeStateTo(S_TURN_RIGHT);
       }
@@ -165,21 +162,17 @@ void loop()
       }
 
       // Checks zumo robots distance to an other object.
-      else if(distance <= chosenDistanceObject)
+      else if(checkIfAvoidObject() == true)
        {
-        if((sensor_values[5] > QTR_THRESHOLD) and (sensor_values[0] > QTR_THRESHOLD))
-        {
-          //blinkLED(RED_LED); // Makes the red LED blink
-          changeStateTo(S_EVADE_OBJECT);
-        }
+        changeStateTo(S_EVADE_OBJECT);
        }
 
-       else if((distance <= chosenDistanceObject) and (sensor_values[5] < QTR_THRESHOLD))
+       else if(checkIfAvoidObjectTurnLeft() == true)
        {
         changeStateTo(S_EVADE_OBJECT_TURN_LEFT);
        }
 
-       else if ((distance <= chosenDistanceObject) and (sensor_values[0] < QTR_THRESHOLD))
+       else if (checkIfAvoidObjectTurnRight() == true)
        {
         changeStateTo(S_EVADE_OBJECT_TURN_RIGHT);
        }
@@ -205,10 +198,10 @@ void loop()
       sensors.read(sensor_values); // Checks which color-surface the robot is driving on.
       distance = getDistance();
       
-      if((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
-      {
+      if(checkIfTurnLeft() == true)
+       {
         changeStateTo(S_TURN_LEFT);
-      }
+       }
 
       else if(checkIfFreeDrive() == true)
       {
@@ -216,20 +209,17 @@ void loop()
       }
 
       // Checks zumo robots distance to an other object.
-      else if(distance <= chosenDistanceObject)
+      else if(checkIfAvoidObject() == true)
        {
-        if((sensor_values[5] > QTR_THRESHOLD) and (sensor_values[0] > QTR_THRESHOLD))
-        {
-          changeStateTo(S_EVADE_OBJECT);
-        }
+        changeStateTo(S_EVADE_OBJECT);
        }
 
-       else if((distance <= chosenDistanceObject) and (sensor_values[5] < QTR_THRESHOLD))
+       else if(checkIfAvoidObjectTurnLeft() == true)
        {
         changeStateTo(S_EVADE_OBJECT_TURN_LEFT);
        }
 
-       else if ((distance <= chosenDistanceObject) and (sensor_values[0] < QTR_THRESHOLD))
+       else if (checkIfAvoidObjectTurnRight() == true)
        {
         changeStateTo(S_EVADE_OBJECT_TURN_RIGHT);
        }
@@ -255,22 +245,22 @@ void loop()
           changeStateTo(S_FREE_DRIVE);
         }
        
-      else if((distance <= chosenDistanceObject) and (sensor_values[5] < QTR_THRESHOLD))
+      else if(checkIfAvoidObjectTurnLeft() == true)
        {
         changeStateTo(S_EVADE_OBJECT_TURN_LEFT);
        }
 
-      else if ((distance <= chosenDistanceObject) and (sensor_values[0] < QTR_THRESHOLD))
+      else if (checkIfAvoidObjectTurnRight() == true)
        {
         changeStateTo(S_EVADE_OBJECT_TURN_RIGHT);
        }
 
-      else if((sensor_values[0] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
+      else if(checkIfTurnRight() == true)
        {
         changeStateTo(S_TURN_RIGHT);
        }
         
-      else if((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
+      else if(checkIfTurnLeft() == true)
        {
         changeStateTo(S_TURN_LEFT);
        }
@@ -298,26 +288,22 @@ void loop()
          changeStateTo(S_FREE_DRIVE);
        }
 
-      else if((sensor_values[0] > QTR_THRESHOLD) and (sensor_values[5] > QTR_THRESHOLD))  
+      else if(checkIfAvoidObject() == true)
        {
-        if(distance <= chosenDistanceObject)
-        {
-          //blinkLED(RED_LED); // Makes the blue LED blink
-          changeStateTo(S_EVADE_OBJECT);
-        }
+        changeStateTo(S_EVADE_OBJECT);
        }
 
-      else if ((distance <= chosenDistanceObject) and (sensor_values[0] < QTR_THRESHOLD))
+      else if (checkIfAvoidObjectTurnRight() == true)
        {
         changeStateTo(S_EVADE_OBJECT_TURN_RIGHT);
        }
 
-      else if((sensor_values[0] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
+      else if(checkIfTurnRight() == true)
        {
         changeStateTo(S_TURN_RIGHT);
        }
         
-      else if((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
+      else if(checkIfTurnLeft() == true)
        {
         changeStateTo(S_TURN_LEFT);
        }
@@ -344,25 +330,22 @@ void loop()
           changeStateTo(S_FREE_DRIVE);
         }
 
-      else if((sensor_values[5] > QTR_THRESHOLD) and (sensor_values[0] > QTR_THRESHOLD))
+      else if(checkIfAvoidObject() == true)
        {
-        if(distance <= chosenDistanceObject)
-        {
-          changeStateTo(S_EVADE_OBJECT);
-        }
+        changeStateTo(S_EVADE_OBJECT);
        }
 
-      else if((distance <= chosenDistanceObject) and (sensor_values[5] < QTR_THRESHOLD))
+      else if(checkIfAvoidObjectTurnLeft() == true)
        {
         changeStateTo(S_EVADE_OBJECT_TURN_LEFT);
        }
        
-      else if((sensor_values[0] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
+      else if(checkIfTurnRight() == true)
        {
         changeStateTo(S_TURN_RIGHT);
        }
         
-      else if((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
+      else if(checkIfTurnLeft() == true)
        {
         changeStateTo(S_TURN_LEFT);
        }
@@ -577,13 +560,13 @@ bool checkIfTurnRight()
   int variable;
   if((sensor_values[0] < QTR_THRESHOLD) and (distance > chosenDistanceObject ))
    {
-     variable = true;  
-        //changeStateTo(S_TURN_RIGHT);
+    variable = true;  
    }
   else
   {
-    variable = false;
+   variable = false;
   }
+  return variable;
 }
 
 bool checkIfTurnLeft()
@@ -592,12 +575,12 @@ bool checkIfTurnLeft()
  if((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
    {
     variable = true;
-    changeStateTo(S_TURN_LEFT);
    }
  else
  {
   variable = false;
  }
+ return variable;
 }
 
 bool checkIfAvoidObject()
@@ -608,22 +591,27 @@ bool checkIfAvoidObject()
      if((sensor_values[5] > QTR_THRESHOLD) and (sensor_values[0] > QTR_THRESHOLD))
       {
        variable = true;
-       changeStateTo(S_EVADE_OBJECT);
       }
      else
      {
       variable = false;
      }
     }
+  return variable;
 }
 
 bool checkIfAvoidObjectTurnRight()
 {
   int variable;
   if((sensor_values[0] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
-       {
-        changeStateTo(S_TURN_RIGHT);
-       }
+    {
+     variable = true;
+    }
+  else
+  {
+    variable = false;
+  }
+  return variable;
 }
 
 bool checkIfAvoidObjectTurnLeft()
@@ -632,10 +620,10 @@ bool checkIfAvoidObjectTurnLeft()
   if((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
     {
      variable = true;
-     changeStateTo(S_TURN_LEFT);
     }
    else
    {
     variable = false;
    }
+   return variable;
 }
