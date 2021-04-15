@@ -93,8 +93,7 @@ void loop()
       if (myTimer.hasExpired())
       {
         motors.setSpeeds(REVERSE_SPEED, REVERSE_SPEED);
-        turnLedOn(GREEN_LED);
-        turnLedOff(RED_LED);
+        setLights(1);
         //setPositionServo(180);
         stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
         
@@ -142,8 +141,7 @@ void loop()
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
       
       //setPositionServo(30); // Sets servo degree at 30.
-      turnLedOff(RED_LED); // Turns of red LED
-      blinkLED(GREEN_LED); // Green LED blinks
+      setLights(2);
       
       sensors.read(sensor_values); // Checks which color-surface the robot is driving on.
       distance = getDistance();
@@ -185,8 +183,7 @@ void loop()
       delay(TURN_DURATION);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
       //setPositionServo(150); // Sets servo degree at 150.
-      turnLedOff(RED_LED); // Turns off red LED.
-      blinkLED(GREEN_LED); // Green LED blinks.
+      setLights(2);
       
       sensors.read(sensor_values); // Checks which color-surface the robot is driving on.
       distance = getDistance();
@@ -221,13 +218,16 @@ void loop()
 
     case S_EVADE_OBJECT:
       motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
+      delay(REVERSE_DURATION);
+      motors.setSpeeds(TURN_SPEED, -TURN_SPEED);
+      delay(TURN_DURATION);
+      motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
       // Checks zumo robots distance to an other object.
       distance = getDistance();
       // Checks which color-surface the robot is driving on.
       sensors.read(sensor_values); 
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
-      turnLedOff(GREEN_LED); // Turns green LED off.
-      turnLedOn(RED_LED); // Turns red LED on.
+      setLights(3);
       
       if(checkIfFreeDrive() == true)
         {
@@ -257,15 +257,14 @@ void loop()
     break;
 
     case S_EVADE_OBJECT_TURN_LEFT:
-      motors.setSpeeds(0, 0);
+      motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
       // Checks zumo robots distance to an other object.
       distance = getDistance();
       // Checks which color-surface the robot is driving on.
       sensors.read(sensor_values); 
      
-      turnLedOff(GREEN_LED); // Turns off green LED.
-      blinkLED(RED_LED); // Red LED blinks.
+      setLights(4);
 
       if(checkIfFreeDrive() == true)
         {
@@ -295,15 +294,14 @@ void loop()
     break;
 
     case S_EVADE_OBJECT_TURN_RIGHT:
-      motors.setSpeeds(0, 0);
+      motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
       // Checks zumo robots distance to an other object.
       distance = getDistance();
       // Checks which color-surface the robot is driving on.
       sensors.read(sensor_values); 
 
-      turnLedOff(GREEN_LED); // Turns of green LED.
-      blinkLED(RED_LED); // Red LED blinks.
+      setLights(4);
 
       if(checkIfFreeDrive() == true)
         {
@@ -449,7 +447,49 @@ void blinkLED(int ledPin)
   turnLedOff(ledPin);
 }
 
-// Functions to decide which state the robot should be in
+// Control LED with phase-function.
+void setLights(int phase)
+{
+ if((phase >=1) && (phase<=4))
+ {
+ switch(phase)
+ {
+   case 1:
+   // Only green LED on.
+   turnLedOff(RED_LED);
+   turnLedOn(GREEN_LED);
+   break;
+
+   case 2:
+   // Green LED blinks, red LED off.
+   turnLedOff(RED_LED);
+   blinkLED(GREEN_LED);
+
+   break;
+    
+   case 3:
+   // Only red LED on.
+   turnLedOn(RED_LED);
+   turnLedOff(GREEN_LED);
+
+   break;
+    
+   case 4:
+   // Red LED blinks, green LED off.
+   blinkLED(RED_LED);
+   turnLedOff(GREEN_LED);
+
+   break;
+  }
+ }
+ else
+ {
+  turnLedOff(RED_LED);
+  turnLedOff(GREEN_LED);
+ }
+}
+
+// FUNCTIONS WHICH DECIDE WHICH STATE ROBOT SHOULD BE IN
 bool checkIfFreeDrive()
 {
   if(distance > chosenDistanceObject)
@@ -531,6 +571,7 @@ bool checkIfAvoidObjectTurnRight()
   return variable;
 }
 
+// Check if robots needs to avoid object and turn left
 bool checkIfAvoidObjectTurnLeft()
 {
   if((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
@@ -544,6 +585,7 @@ bool checkIfAvoidObjectTurnLeft()
    return variable;
 }
 
+// Function for the melody played at calibration mode
 void playStartingMelody()
 {
   for(int i = 0; i<4; i++)
