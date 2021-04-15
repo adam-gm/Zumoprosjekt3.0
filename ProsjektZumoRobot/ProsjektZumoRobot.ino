@@ -20,9 +20,9 @@ const int ECHO_PIN = A3;           //connects to the echo pin on the distance se
 #define QTR_THRESHOLD  500 // 1500 microseconds
   
 // these might need to be tuned for different motor types
-#define REVERSE_SPEED     200 // 0 is stopped, 400 is full speed
-#define TURN_SPEED        200
-#define FORWARD_SPEED     200
+#define REVERSE_SPEED     120 // 0 is stopped, 400 is full speed
+#define TURN_SPEED        120
+#define FORWARD_SPEED     120
 #define REVERSE_DURATION  200 // ms
 #define TURN_DURATION     300 // ms
 
@@ -89,7 +89,6 @@ void loop()
   {
     // State where robot drives freely
     case S_FREE_DRIVE:
-    
       // Checks if callibration mode is finished.
       if (myTimer.hasExpired())
       {
@@ -381,24 +380,8 @@ void waitForButtonAndCountDown()
   turnLedOff(GREEN_LED);
   button.waitForButton(); // Starts calibration for the robot if button is pressed.
   myTimer.start(5000); // Starts a 5 second timer.
-
-  for(int i = 0; i<2; i++)
-  {
-  buzzer.playNote(NOTE_F(2), 200, 15);
-  delay(1000);
-  }
-
-  buzzer.playNote(NOTE_C(3), 200, 15);
-  delay(350);
-  buzzer.playNote(NOTE_C(3), 200, 15);
-  delay(350);
-  buzzer.playNote(NOTE_C(3), 200, 15);
-  delay(300);
-  buzzer.playNote(NOTE_A(6), 200, 15);
-  delay(500);
-  buzzer.playNote(NOTE_B(6), 200, 15);
-  delay(500);
-  buzzer.playNote(NOTE_B(4), 200, 15);
+  
+  playStartingMelody();
   
   /*
   digitalWrite(LED, HIGH);
@@ -512,6 +495,7 @@ float getDistance()
   return calculatedDistance;              //send back the distance that was calculated
 }
 
+// Make LED blink.
 void blinkLED(int ledPin)
 {
   turnLedOn(ledPin);
@@ -612,4 +596,34 @@ bool checkIfAvoidObjectTurnLeft()
     variable = false;
    }
    return variable;
+}
+
+void playStartingMelody()
+{
+  for(int i = 0; i<4; i++)
+  {
+  buzzer.playNote(NOTE_C(4), 200, 15);
+  delay(500);
+  }
+  
+  buzzer.playNote(NOTE_A(2), 200, 15);
+  delay(375);
+  buzzer.playNote(NOTE_A(3), 200, 15);
+  delay(375);
+  buzzer.playNote(NOTE_A(4), 200, 15);
+  delay(375);
+
+  buzzer.playNote(NOTE_B(2), 200, 15);
+  delay(375);
+  buzzer.playNote(NOTE_B(3), 200, 15);
+  delay(375);
+  buzzer.playNote(NOTE_B(4), 200, 15);
+  delay(375);
+
+  buzzer.playNote(NOTE_C(2), 200, 15);
+  delay(333);
+  buzzer.playNote(NOTE_C(3), 200, 15);
+  delay(333);
+  buzzer.playNote(NOTE_C(2), 200, 15);
+  delay(333);
 }
