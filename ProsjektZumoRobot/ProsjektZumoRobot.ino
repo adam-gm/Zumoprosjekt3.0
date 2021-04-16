@@ -374,6 +374,12 @@ void printState(int state)
     case 3:
       Serial.println("S_EVADE_OBJECT");
     break;
+    case 4:
+      Serial.println("S_EVADE_OBJECT_TURN_LEFT");
+    break;
+    case 5:
+      Serial.println("S_EVADE_OBJECT_TURN_RIGHT");
+    break;
   }
 }
 
