@@ -25,11 +25,11 @@ const int IR_RIGHT_SENSOR = A2;
 #define QTR_THRESHOLD  1500 // 1500 microseconds
   
 // these might need to be tuned for different motor types
-#define REVERSE_SPEED     50 // 0 is stopped, 400 is full speed
-#define TURN_SPEED        50
-#define FORWARD_SPEED     50
-#define REVERSE_DURATION  50 // ms
-#define TURN_DURATION     50 // ms
+#define REVERSE_SPEED     100 // 0 is stopped, 400 is full speed
+#define TURN_SPEED        100
+#define FORWARD_SPEED     100
+#define REVERSE_DURATION  100 // ms
+#define TURN_DURATION     100 // ms
 
 // Defining integrated classes for the zumo robot.
 ZumoBuzzer buzzer; // buzzer on pin 3
@@ -52,6 +52,7 @@ int currentState = S_FREE_DRIVE;
 
 // Declaring variable to hold distance between the robot and an object.
 float distance;
+float irDistanceCheck;
 
 // Variable to hold maximum distance from object
 float chosenDistanceObject = 5.0;
@@ -73,7 +74,7 @@ void setup()
   //motors.flipLeftMotor(true);
   //motors.flipRightMotor(true);
 
-  Serial.begin(200000);
+  Serial.begin(9600);
   
   // Configure pins
   pinMode(GREEN_LED, OUTPUT);
@@ -133,12 +134,12 @@ void loop()
 
        else if(leftSensorCheckIfAvoidObject() == true)
        {
-        changeStateTo(S_EVADE_OBJECT);
+        changeStateTo(S_TURN_LEFT);
        }
 
        else if(rightSensorCheckIfAvoidObject() == true)
        {
-        changeStateTo(S_EVADE_OBJECT);
+        changeStateTo(S_TURN_RIGHT);
        }
       }
 
@@ -188,12 +189,12 @@ void loop()
 
        else if(leftSensorCheckIfAvoidObject() == true)
        {
-        changeStateTo(S_EVADE_OBJECT);
+        changeStateTo(S_TURN_LEFT);
        }
 
        else if(rightSensorCheckIfAvoidObject() == true)
        {
-        changeStateTo(S_EVADE_OBJECT);
+        changeStateTo(S_TURN_RIGHT);
        }
        
     break;
@@ -240,12 +241,12 @@ void loop()
 
        else if(leftSensorCheckIfAvoidObject() == true)
        {
-        changeStateTo(S_EVADE_OBJECT);
+        changeStateTo(S_TURN_LEFT);
        }
 
        else if(rightSensorCheckIfAvoidObject() == true)
        {
-        changeStateTo(S_EVADE_OBJECT);
+        changeStateTo(S_TURN_RIGHT);
        }
        
     break;
@@ -290,12 +291,12 @@ void loop()
 
        else if(leftSensorCheckIfAvoidObject() == true)
        {
-        changeStateTo(S_EVADE_OBJECT);
+        changeStateTo(S_TURN_LEFT);
        }
 
        else if(rightSensorCheckIfAvoidObject() == true)
        {
-        changeStateTo(S_EVADE_OBJECT);
+        changeStateTo(S_TURN_RIGHT);
        }
     break;
 
@@ -336,12 +337,12 @@ void loop()
 
        else if(leftSensorCheckIfAvoidObject() == true)
        {
-        changeStateTo(S_EVADE_OBJECT);
+        changeStateTo(S_TURN_LEFT);
        }
 
        else if(rightSensorCheckIfAvoidObject() == true)
        {
-        changeStateTo(S_EVADE_OBJECT);
+        changeStateTo(S_TURN_RIGHT);
        }
 
     break;
@@ -353,7 +354,7 @@ void loop()
       distance = getDistance();
       // Checks which color-surface the robot is driving on.
       sensors.read(sensor_values); 
-
+      
       setLights(4);
 
       if(checkIfFreeDrive() == true)
@@ -383,12 +384,12 @@ void loop()
 
        else if(leftSensorCheckIfAvoidObject() == true)
        {
-        changeStateTo(S_EVADE_OBJECT);
+        changeStateTo(S_TURN_LEFT);
        }
 
        else if(rightSensorCheckIfAvoidObject() == true)
        {
-        changeStateTo(S_EVADE_OBJECT);
+        changeStateTo(S_TURN_RIGHT);
        }
 
     break;
@@ -656,9 +657,7 @@ bool checkIfAvoidObjectTurnLeft()
 
 bool leftSensorCheckIfAvoidObject()
 {
-  float distance = getValueIrSensor(IR_RIGHT_SENSOR);
-  
-  if(getValueIrSensor(IR_LEFT_SENSOR) < 30)
+  if(getValueIrSensor(IR_LEFT_SENSOR) > 300)
   {
     variable = true;
     
@@ -667,15 +666,13 @@ bool leftSensorCheckIfAvoidObject()
   {
     variable = false;
   }
-  Serial.println(distance);
   
   return variable;
 }
 
 bool rightSensorCheckIfAvoidObject()
 {
-  float distance = getValueIrSensor(IR_LEFT_SENSOR);
-  if(getValueIrSensor(IR_RIGHT_SENSOR) < 30)
+  if(getValueIrSensor(IR_RIGHT_SENSOR) > 300)
   {
     variable = true;
   }
@@ -683,13 +680,13 @@ bool rightSensorCheckIfAvoidObject()
   {
     variable = false;
   }
-  Serial.println(distance);
   return variable;
 }
 
 int getValueIrSensor(int irSensorPin)
 {
- float irDistance = analogRead(irSensorPin);
+ float irDistance = analogRead(irSensorPin); // This values measures distance by how high voltage get returned. The closer the object, the higher voltage returns.
+ Serial.println(irDistance);
  return irDistance;
 }
 
