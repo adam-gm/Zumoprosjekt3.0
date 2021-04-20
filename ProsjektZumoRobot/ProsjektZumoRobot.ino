@@ -14,7 +14,6 @@ const int RED_LED = 6;
 const int TRIG_PIN = A1;           //connects to the trigger pin on the distance sensor
 const int ECHO_PIN = A3;           //connects to the echo pin on the distance sensor
 
-const int IR_SENSOR_PINS = A0||A2;
 const int IR_LEFT_SENSOR = A0;
 const int IR_RIGHT_SENSOR = A2;
 
