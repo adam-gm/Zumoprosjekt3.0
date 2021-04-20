@@ -6,25 +6,30 @@
 #include <Servo.h>
 #include "timer.h"
 
-// Constants defining unused pins
+// Constants defining LEDs.
 const int GREEN_LED = 2;
 const int RED_LED = 6;
 
+// Constants defining sensors.
 const int TRIG_PIN = A1;           //connects to the trigger pin on the distance sensor
 const int ECHO_PIN = A3;           //connects to the echo pin on the distance sensor
+
+const int IR_SENSOR_PINS = A0||A2;
+const int IR_LEFT_SENSOR = A0;
+const int IR_RIGHT_SENSOR = A2;
 
 // LED connected to pin 13 of the zumo robot.
 #define LED 13
  
 // this might need to be tuned for different lighting conditions, surfaces, etc.
-#define QTR_THRESHOLD  500 // 1500 microseconds
+#define QTR_THRESHOLD  1500 // 1500 microseconds
   
 // these might need to be tuned for different motor types
-#define REVERSE_SPEED     120 // 0 is stopped, 400 is full speed
-#define TURN_SPEED        120
-#define FORWARD_SPEED     120
-#define REVERSE_DURATION  200 // ms
-#define TURN_DURATION     300 // ms
+#define REVERSE_SPEED     50 // 0 is stopped, 400 is full speed
+#define TURN_SPEED        50
+#define FORWARD_SPEED     50
+#define REVERSE_DURATION  50 // ms
+#define TURN_DURATION     50 // ms
 
 // Defining integrated classes for the zumo robot.
 ZumoBuzzer buzzer; // buzzer on pin 3
@@ -125,7 +130,16 @@ void loop()
        {
         changeStateTo(S_EVADE_OBJECT_TURN_RIGHT);
        }
-       
+
+       else if(leftSensorCheckIfAvoidObject() == true)
+       {
+        changeStateTo(S_EVADE_OBJECT);
+       }
+
+       else if(rightSensorCheckIfAvoidObject() == true)
+       {
+        changeStateTo(S_EVADE_OBJECT);
+       }
       }
 
     break;
@@ -171,6 +185,16 @@ void loop()
        {
         changeStateTo(S_EVADE_OBJECT_TURN_RIGHT);
        }
+
+       else if(leftSensorCheckIfAvoidObject() == true)
+       {
+        changeStateTo(S_EVADE_OBJECT);
+       }
+
+       else if(rightSensorCheckIfAvoidObject() == true)
+       {
+        changeStateTo(S_EVADE_OBJECT);
+       }
        
     break;
 
@@ -213,6 +237,16 @@ void loop()
        {
         changeStateTo(S_EVADE_OBJECT_TURN_RIGHT);
        }
+
+       else if(leftSensorCheckIfAvoidObject() == true)
+       {
+        changeStateTo(S_EVADE_OBJECT);
+       }
+
+       else if(rightSensorCheckIfAvoidObject() == true)
+       {
+        changeStateTo(S_EVADE_OBJECT);
+       }
        
     break;
 
@@ -253,7 +287,16 @@ void loop()
        {
         changeStateTo(S_TURN_LEFT);
        }
-       
+
+       else if(leftSensorCheckIfAvoidObject() == true)
+       {
+        changeStateTo(S_EVADE_OBJECT);
+       }
+
+       else if(rightSensorCheckIfAvoidObject() == true)
+       {
+        changeStateTo(S_EVADE_OBJECT);
+       }
     break;
 
     case S_EVADE_OBJECT_TURN_LEFT:
@@ -291,6 +334,16 @@ void loop()
         changeStateTo(S_TURN_LEFT);
        }
 
+       else if(leftSensorCheckIfAvoidObject() == true)
+       {
+        changeStateTo(S_EVADE_OBJECT);
+       }
+
+       else if(rightSensorCheckIfAvoidObject() == true)
+       {
+        changeStateTo(S_EVADE_OBJECT);
+       }
+
     break;
 
     case S_EVADE_OBJECT_TURN_RIGHT:
@@ -326,6 +379,16 @@ void loop()
       else if(checkIfTurnLeft() == true)
        {
         changeStateTo(S_TURN_LEFT);
+       }
+
+       else if(leftSensorCheckIfAvoidObject() == true)
+       {
+        changeStateTo(S_EVADE_OBJECT);
+       }
+
+       else if(rightSensorCheckIfAvoidObject() == true)
+       {
+        changeStateTo(S_EVADE_OBJECT);
        }
 
     break;
@@ -500,7 +563,7 @@ bool checkIfFreeDrive()
 {
   if(distance > chosenDistanceObject)
      {
-       if ((sensor_values[0] > QTR_THRESHOLD) and (sensor_values[5] > QTR_THRESHOLD))
+       if ((sensor_values[0] < QTR_THRESHOLD) and (sensor_values[5] < QTR_THRESHOLD))
          {
            variable = true;
          }
@@ -520,7 +583,7 @@ bool checkIfFreeDrive()
 
 bool checkIfTurnRight()
 {
-  if((sensor_values[0] < QTR_THRESHOLD) and (distance > chosenDistanceObject ))
+  if((sensor_values[0] > QTR_THRESHOLD) and (distance > chosenDistanceObject ))
    {
     variable = true;  
    }
@@ -533,7 +596,7 @@ bool checkIfTurnRight()
 
 bool checkIfTurnLeft()
 {
- if((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
+ if((sensor_values[5] > QTR_THRESHOLD) and (distance > chosenDistanceObject))
    {
     variable = true;
    }
@@ -548,7 +611,7 @@ bool checkIfAvoidObject()
 {
   if(distance <= chosenDistanceObject)
     {
-     if((sensor_values[5] > QTR_THRESHOLD) and (sensor_values[0] > QTR_THRESHOLD))
+     if((sensor_values[5] < QTR_THRESHOLD) and (sensor_values[0] < QTR_THRESHOLD))
       {
        variable = true;
       }
@@ -566,7 +629,7 @@ bool checkIfAvoidObject()
 
 bool checkIfAvoidObjectTurnRight()
 {
-  if((sensor_values[0] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
+  if((sensor_values[0] > QTR_THRESHOLD) and (distance > chosenDistanceObject))
     {
       variable = true;
     }
@@ -580,7 +643,7 @@ bool checkIfAvoidObjectTurnRight()
 // Check if robots needs to avoid object and turn left
 bool checkIfAvoidObjectTurnLeft()
 {
-  if((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
+  if((sensor_values[5] > QTR_THRESHOLD) and (distance > chosenDistanceObject))
     {
      variable = true;
     }
@@ -589,6 +652,45 @@ bool checkIfAvoidObjectTurnLeft()
     variable = false;
    }
    return variable;
+}
+
+bool leftSensorCheckIfAvoidObject()
+{
+  float distance = getValueIrSensor(IR_RIGHT_SENSOR);
+  
+  if(getValueIrSensor(IR_LEFT_SENSOR) < 30)
+  {
+    variable = true;
+    
+  }
+  else
+  {
+    variable = false;
+  }
+  Serial.println(distance);
+  
+  return variable;
+}
+
+bool rightSensorCheckIfAvoidObject()
+{
+  float distance = getValueIrSensor(IR_LEFT_SENSOR);
+  if(getValueIrSensor(IR_RIGHT_SENSOR) < 30)
+  {
+    variable = true;
+  }
+  else
+  {
+    variable = false;
+  }
+  Serial.println(distance);
+  return variable;
+}
+
+int getValueIrSensor(int irSensorPin)
+{
+ float irDistance = analogRead(irSensorPin);
+ return irDistance;
 }
 
 // Function for the melody played at calibration mode
