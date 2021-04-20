@@ -684,7 +684,7 @@ bool rightSensorCheckIfAvoidObject()
 
 int getValueIrSensor(int irSensorPin)
 {
- float irDistance = analogRead(irSensorPin); // This values measures distance by how high voltage get returned. The closer the object, the higher voltage returns.
+ float irDistance = analogRead(irSensorPin); // This value measures distance by how high voltage get returned. The closer the object, the higher voltage returns.
  Serial.println(irDistance);
  return irDistance;
 }
