@@ -12,7 +12,6 @@ void RobotState::getDistanceLeftRight(int irLeftSensorPin, int irRightSensorPin)
 {
   irDistanceLeft = analogRead(irLeftSensorPin); // This value measures distance by how high voltage get returned. The closer the object, the higher voltage returns.
   irDistanceRight = analogRead(irRightSensorPin); // This value measures distance by how high voltage get returned. The closer the object, the higher voltage returns.
-  //Serial.println(irDistance)
 }
 
 void RobotState::getDistance()
@@ -28,26 +27,21 @@ void RobotState::getDistance()
 
   distance = echoTime / 148.0; //calculate the distance of the object that reflected the pulse (half the bounce time multiplied by the speed of sound) (in cm)
 
-  Serial.println(distance);
-
 }
 
 int RobotState::checkWhichStateNeeded()
 {
-  //ZumoReflectanceSensorArray sensors(QTR_NO_EMITTER_PIN);
-
-
   sensors->read(sensor_values);
-  Serial.print("distance=");
-  Serial.print(distance);/*
+  /*Serial.print("distance=");
+  Serial.print(distance);
   Serial.print("\tchosenDistanceObject=");
   Serial.print(chosenDistanceObject);
   Serial.print("\tQr5=");
-  Serial.print(sensor_values[5]);*/
+  Serial.print(sensor_values[5]);
   Serial.print("Left sensor: ");
   Serial.print(irDistanceLeft);
   Serial.print("\tRight sensor: ");
-  Serial.print(irDistanceRight);
+  Serial.print(irDistanceRight);*/
 
   if (irDistanceLeft > 300)
   {
@@ -102,15 +96,13 @@ int RobotState::checkWhichStateNeeded()
   }
 
   
-  Serial.print("State: ");
-  Serial.println(variable);
+  /*Serial.print("State: ");
+  Serial.println(variable);*/
   return variable;
 }
 
 void RobotState::init()
 {
-  Serial.print("-------------------");
-
   //variable to store the time it takes for a ping to bounce off an object
   chosenDistanceObject = 5.0;
 }
