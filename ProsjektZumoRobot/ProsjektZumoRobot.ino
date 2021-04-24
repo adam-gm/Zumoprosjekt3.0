@@ -20,11 +20,11 @@ const int IR_RIGHT_SENSOR = A2;
 #define QTR_THRESHOLD  1500 // 1500 microseconds
   
 // these might need to be tuned for different motor types
-#define REVERSE_SPEED     300 // 0 is stopped, 400 is full speed
-#define TURN_SPEED        300
-#define FORWARD_SPEED     300
-#define REVERSE_DURATION  300 // ms
-#define TURN_DURATION     300 // ms
+#define REVERSE_SPEED     400 // 0 is stopped, 400 is full speed
+#define TURN_SPEED        400
+#define FORWARD_SPEED     400
+#define REVERSE_DURATION  400 // ms
+#define TURN_DURATION     400 // ms
 
 // Defining integrated classes for the zumo robot.
 ZumoBuzzer buzzer; // buzzer on pin 3
@@ -51,9 +51,6 @@ RobotState zumoRobot;
 // Global variable to decide which state robot needs to be in.
 int newState;
 
-// Create a servo-objekt
-Servo myServo;
-
 void setup()
 {
   // uncomment if necessary to correct motor directions
@@ -70,8 +67,6 @@ void setup()
   pinMode(LED, HIGH);
   
   zumoRobot.initObjectSensor();
-
-  //myServo.attach(11);            // Use pin 11 to control the servo
   
   waitForButtonAndCountDown();
 }
@@ -91,7 +86,7 @@ void loop()
         motors.setSpeeds(REVERSE_SPEED, REVERSE_SPEED);
         turnLedOn(GREEN_LED);
         turnLedOff(RED_LED);
-        //setPositionServo(180);
+       
         stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
 
         zumoRobot.getDistance();
@@ -113,7 +108,6 @@ void loop()
       delay(TURN_DURATION);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
       
-      //setPositionServo(30); // Sets servo degree at 30.
       turnLedOff(RED_LED); // Turns of red LED
       blinkLED(GREEN_LED); // Green LED blinks
 
@@ -132,7 +126,7 @@ void loop()
       motors.setSpeeds(TURN_SPEED, -TURN_SPEED);
       delay(TURN_DURATION);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
-      //setPositionServo(150); // Sets servo degree at 150.
+      
       turnLedOff(RED_LED); // Turns off red LED.
       blinkLED(GREEN_LED); // Green LED blinks.
 
@@ -186,7 +180,6 @@ void loop()
       newState = zumoRobot.checkWhichStateNeeded();
       changeStateTo(newState);
 
-      
     break;
   }
   
@@ -198,28 +191,16 @@ void waitForButtonAndCountDown()
 {
   button.waitForButton(); // Starts calibration for the robot if button is pressed.
   myTimer.start(5000); // Starts a 5 second timer.
-
-  for(int i = 0; i<2; i++)
-  {
-  buzzer.playNote(NOTE_F(2), 200, 15);
-  delay(1000);
-  }
-
-  buzzer.playNote(NOTE_C(3), 200, 15);
-  delay(350);
-  buzzer.playNote(NOTE_C(3), 200, 15);
-  delay(350);
-  buzzer.playNote(NOTE_C(3), 200, 15);
-
+  playStartingMelody();
 }
 
 // Function for changing system-state.
 void changeStateTo(int newState)
 {
  
-   //Serial.print("State changed from ");
+   Serial.print("State changed from ");
    (printState(currentState));
-   //Serial.print(" to ");
+   Serial.print(" to ");
    currentState = newState;
    (printState(newState));
   
@@ -228,7 +209,7 @@ void changeStateTo(int newState)
 
 //Prints out system-state.
 void printState(int state)
-{/*
+{
   switch(state)
   {
     case 0:
@@ -243,7 +224,12 @@ void printState(int state)
     case 3:
       Serial.println("S_EVADE_OBJECT");
     break;
-  }*/
+    case 4:
+      Serial.println("S_EVADE_OBJECT_TURN_LEFT");
+    case 5:
+      Serial.println("S_EVADE_OBJECT_TURN_RIGHT");
+    break;
+  }
 }
 
 // Function to turn on LED.
@@ -270,11 +256,38 @@ void stopZumoRobot()
   }
 }
 
-
-
 void blinkLED(int ledPin)
 {
   turnLedOn(ledPin);
   delay(250);
   turnLedOff(ledPin);
+}
+
+// Function for the melody played at calibration mode
+void playStartingMelody()
+{
+  for(int i = 0; i<4; i++)
+  {
+  buzzer.playNote(NOTE_C(4), 200, 15);
+  delay(500);
+  }
+  
+  buzzer.playNote(NOTE_A(2), 200, 15);
+  delay(375);
+  buzzer.playNote(NOTE_A(3), 200, 15);
+  delay(375);
+  buzzer.playNote(NOTE_A(4), 200, 15);
+  delay(375);
+  buzzer.playNote(NOTE_B(2), 200, 15);
+  delay(375);
+  buzzer.playNote(NOTE_B(3), 200, 15);
+  delay(375);
+  buzzer.playNote(NOTE_B(4), 200, 15);
+  delay(375);
+  buzzer.playNote(NOTE_C(2), 200, 15);
+  delay(333);
+  buzzer.playNote(NOTE_C(3), 200, 15);
+  delay(333);
+  buzzer.playNote(NOTE_C(2), 200, 15);
+  delay(333);
 }

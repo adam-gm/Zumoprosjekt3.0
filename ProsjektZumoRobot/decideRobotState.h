@@ -25,7 +25,7 @@ class RobotState
     float irDistanceRight;
     unsigned int sensor_values[6];
     ZumoReflectanceSensorArray* sensors;//(QTR_NO_EMITTER_PIN);
-      int variable = 0;
+      int robotState = 0;
 };
 
 #endif

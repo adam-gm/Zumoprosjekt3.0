@@ -45,60 +45,49 @@ int RobotState::checkWhichStateNeeded()
 
   if (irDistanceLeft > 300)
   {
-    Serial.print("z--");
-    variable = 1; // S_TURN_LEFT
+    robotState = 1; // S_TURN_LEFT
   }
 
   else if (irDistanceRight > 300)
   {
-    Serial.print("x---");
-    variable = 2; // S_TURN_RIGHT
+    robotState = 2; // S_TURN_RIGHT
   }
 
   else if ((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
   {
-    Serial.print("b---");
-    variable = 1; // S_TURN_LEFT
+    robotState = 1; // S_TURN_LEFT
   }
 
   else if ((sensor_values[0] < QTR_THRESHOLD) and (distance > chosenDistanceObject ))
   {
-    Serial.print("c---");
-    variable = 2; // S_TURN_RIGHT;
+    robotState = 2; // S_TURN_RIGHT;
   }
   
   else if ((distance > chosenDistanceObject) and (sensor_values[0] > QTR_THRESHOLD) and (sensor_values[5] > QTR_THRESHOLD))
   {
-    Serial.print("a---");
-    variable = 0; // S_FREE_DRIVE
-    //Serial.print(sensor_values[0]);
-    //Serial.print(" ");
-    //Serial.println(sensor_values[5]);
+    robotState = 0; // S_FREE_DRIVE
   }
   
   else if ((distance <= chosenDistanceObject) and (sensor_values[5] > QTR_THRESHOLD) and (sensor_values[0] > QTR_THRESHOLD))
   {
-    Serial.print("d0---");
-    Serial.print("d---");
-    variable = 3; //S_EVADE_OBJECT
+    robotState = 3; //S_EVADE_OBJECT
 
   }
 
   else if ((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
   {
-    Serial.print("e---");
-    variable = 4; // S_EVADE_OBJECT_TURN_LEFT
+    robotState = 4; // S_EVADE_OBJECT_TURN_LEFT
   }
 
   else if ((sensor_values[0] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
   {
-    variable = 5; // S_EVADE_OBJECT_TURN_RIGHT
+    robotState = 5; // S_EVADE_OBJECT_TURN_RIGHT
   }
 
   
-  /*Serial.print("State: ");
-  Serial.println(variable);*/
-  return variable;
+  Serial.print("State: ");
+  Serial.println(robotState);
+  return robotState;
 }
 
 void RobotState::init()
