@@ -43,17 +43,7 @@ int RobotState::checkWhichStateNeeded()
   Serial.print("\tRight sensor: ");
   Serial.print(irDistanceRight);*/
 
-  if (irDistanceLeft > 300)
-  {
-    robotState = 1; // S_TURN_LEFT
-  }
-
-  else if (irDistanceRight > 300)
-  {
-    robotState = 2; // S_TURN_RIGHT
-  }
-
-  else if ((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
+  if ((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
   {
     robotState = 1; // S_TURN_LEFT
   }
@@ -61,6 +51,16 @@ int RobotState::checkWhichStateNeeded()
   else if ((sensor_values[0] < QTR_THRESHOLD) and (distance > chosenDistanceObject ))
   {
     robotState = 2; // S_TURN_RIGHT;
+  }
+  
+  else if (irDistanceLeft > 300)
+  {
+    robotState = 4; // S_EVADE_OBJECT_TURN_LEFT
+  }
+
+  else if (irDistanceRight > 300)
+  {
+    robotState = 5; // S_EVADE_OBJECT_TURN_RIGHT
   }
   
   else if ((distance > chosenDistanceObject) and (sensor_values[0] > QTR_THRESHOLD) and (sensor_values[5] > QTR_THRESHOLD))

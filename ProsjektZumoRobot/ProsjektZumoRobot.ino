@@ -26,6 +26,10 @@ const int IR_RIGHT_SENSOR = A2;
 #define REVERSE_DURATION  400 // ms
 #define TURN_DURATION     400 // ms
 
+#define FREE_DRIVE_SPEED 300
+#define TURN_SPEED_90_DEG 250 
+#define TURN_DURATION_90_DEG 250
+
 // Defining integrated classes for the zumo robot.
 ZumoBuzzer buzzer; // buzzer on pin 3
 ZumoMotors motors;
@@ -83,7 +87,7 @@ void loop()
       // Checks if callibration mode is finished.
       if (myTimer.hasExpired())
       {
-        motors.setSpeeds(REVERSE_SPEED, REVERSE_SPEED);
+        motors.setSpeeds(FREE_DRIVE_SPEED, FREE_DRIVE_SPEED);
         turnLedOn(GREEN_LED);
         turnLedOff(RED_LED);
        
@@ -154,8 +158,8 @@ void loop()
     case S_EVADE_OBJECT_TURN_LEFT:
       motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
       delay(REVERSE_DURATION);
-      motors.setSpeeds(-TURN_SPEED, TURN_SPEED);
-      delay(TURN_DURATION);
+      motors.setSpeeds(-TURN_SPEED_90_DEG, TURN_SPEED_90_DEG);
+      delay(TURN_DURATION_90_DEG);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
       
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
@@ -173,8 +177,8 @@ void loop()
     case S_EVADE_OBJECT_TURN_RIGHT:
       motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
       delay(REVERSE_DURATION);
-      motors.setSpeeds(TURN_SPEED, -TURN_SPEED);
-      delay(TURN_DURATION);
+      motors.setSpeeds(TURN_SPEED_90_DEG, -TURN_SPEED_90_DEG);
+      delay(TURN_DURATION_90_DEG);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
       
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
