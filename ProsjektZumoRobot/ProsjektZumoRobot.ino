@@ -343,9 +343,9 @@ void playStartingMelody()
   buzzer.playNote(NOTE_B(4), 200, 15);
   delay(375);
   buzzer.playNote(NOTE_C(2), 200, 15);
-  delay(333);
+  delay(250);
   buzzer.playNote(NOTE_C(3), 200, 15);
-  delay(333);
+  delay(250);
   buzzer.playNote(NOTE_C(2), 200, 15);
-  delay(333);
+  delay(250);
 }
