@@ -138,11 +138,7 @@ void loop()
     break;
 
     case S_EVADE_OBJECT:
-      motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
-      delay(REVERSE_DURATION);
-      motors.setSpeeds(TURN_SPEED, -TURN_SPEED);
-      delay(TURN_DURATION);
-      motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
+      motors.setSpeeds(REVERSE_SPEED, REVERSE_SPEED);
       
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
       turnLedOff(GREEN_LED); // Turns green LED off.
@@ -157,6 +153,11 @@ void loop()
 
     case S_EVADE_OBJECT_TURN_LEFT:
       motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
+      delay(REVERSE_DURATION);
+      motors.setSpeeds(-TURN_SPEED, TURN_SPEED);
+      delay(TURN_DURATION);
+      motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
+      
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
      
       turnLedOff(GREEN_LED); // Turns off green LED.
@@ -171,6 +172,11 @@ void loop()
 
     case S_EVADE_OBJECT_TURN_RIGHT:
       motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
+      delay(REVERSE_DURATION);
+      motors.setSpeeds(TURN_SPEED, -TURN_SPEED);
+      delay(TURN_DURATION);
+      motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
+      
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
       turnLedOff(GREEN_LED); // Turns of green LED.
       blinkLED(RED_LED); // Red LED blinks.
