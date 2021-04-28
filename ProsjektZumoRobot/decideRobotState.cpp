@@ -52,26 +52,36 @@ int RobotState::checkWhichStateNeeded()
   {
     robotState = 2; // S_TURN_RIGHT;
   }
+
+  else if (irDistanceLeft >= 400)
+  {
+    robotState = 6; // S_EVADE_CLOSE_OBJECT_TURN_LEFT
+  }
+
+  else if(irDistanceRight >= 400)
+  {
+    robotState = 7; // S_EVADE_CLOSE_OBJECT_TURN_RIGHT
+  }
   
-  else if (irDistanceLeft > 300)
+  else if (irDistanceLeft > 175 and irDistanceLeft < 400)
   {
     robotState = 4; // S_EVADE_OBJECT_TURN_LEFT
   }
 
-  else if (irDistanceRight > 300)
+  else if (irDistanceRight > 175 and irDistanceRight < 400)
   {
     robotState = 5; // S_EVADE_OBJECT_TURN_RIGHT
+  }
+
+  else if ((distance <= chosenDistanceObject) and (sensor_values[5] > QTR_THRESHOLD) and (sensor_values[0] > QTR_THRESHOLD))
+  {
+    robotState = 3; //S_EVADE_OBJECT
+
   }
   
   else if ((distance > chosenDistanceObject) and (sensor_values[0] > QTR_THRESHOLD) and (sensor_values[5] > QTR_THRESHOLD))
   {
     robotState = 0; // S_FREE_DRIVE
-  }
-  
-  else if ((distance <= chosenDistanceObject) and (sensor_values[5] > QTR_THRESHOLD) and (sensor_values[0] > QTR_THRESHOLD))
-  {
-    robotState = 3; //S_EVADE_OBJECT
-
   }
 
   else if ((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
@@ -93,5 +103,5 @@ int RobotState::checkWhichStateNeeded()
 void RobotState::init()
 {
   //variable to store the time it takes for a ping to bounce off an object
-  chosenDistanceObject = 5.0;
+  chosenDistanceObject = 15;
 }

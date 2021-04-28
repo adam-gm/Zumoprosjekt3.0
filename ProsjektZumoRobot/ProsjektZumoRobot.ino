@@ -26,9 +26,14 @@ const int IR_RIGHT_SENSOR = A2;
 #define REVERSE_DURATION  400 // ms
 #define TURN_DURATION     400 // ms
 
-#define FREE_DRIVE_SPEED 300
-#define TURN_SPEED_90_DEG 250 
-#define TURN_DURATION_90_DEG 250
+#define FREE_DRIVE_SPEED 350
+#define TURN_SPEED_90_DEG 275 
+#define TURN_DURATION_90_DEG 275
+
+#define TURN_SPEED_CLOSE_OBJECT 200
+#define TURN_DURATION_CLOSE_OBJECT 200
+#define REVERSE_DURATION_CLOSE_OBJECT 600
+
 
 // Defining integrated classes for the zumo robot.
 ZumoBuzzer buzzer; // buzzer on pin 3
@@ -42,6 +47,8 @@ const int S_TURN_RIGHT = 2;
 const int S_EVADE_OBJECT = 3;
 const int S_EVADE_OBJECT_TURN_LEFT = 4;
 const int S_EVADE_OBJECT_TURN_RIGHT = 5;
+const int S_EVADE_CLOSE_OBJECT_TURN_LEFT = 6;
+const int S_EVADE_CLOSE_OBJECT_TURN_RIGHT = 7;
 
 // Global state variable which tells starting sytem state.
 int currentState = S_FREE_DRIVE;
@@ -191,6 +198,41 @@ void loop()
       changeStateTo(newState);
 
     break;
+
+    case S_EVADE_CLOSE_OBJECT_TURN_LEFT:
+      motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
+      delay(REVERSE_DURATION_CLOSE_OBJECT);
+      motors.setSpeeds(-TURN_SPEED_CLOSE_OBJECT, TURN_SPEED_CLOSE_OBJECT);
+      delay(TURN_DURATION_CLOSE_OBJECT);
+      motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
+
+      stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
+      turnLedOff(GREEN_LED); // Turns of green LED.
+      blinkLED(RED_LED); // Red LED blinks.
+
+      zumoRobot.getDistance();
+      zumoRobot.getDistanceLeftRight(IR_LEFT_SENSOR, IR_RIGHT_SENSOR);
+      newState = zumoRobot.checkWhichStateNeeded();
+      changeStateTo(newState);
+      
+    break;
+
+    case S_EVADE_CLOSE_OBJECT_TURN_RIGHT:
+      motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
+      delay(REVERSE_DURATION_CLOSE_OBJECT);
+      motors.setSpeeds(TURN_SPEED_CLOSE_OBJECT, -TURN_SPEED_CLOSE_OBJECT);
+      delay(TURN_DURATION_CLOSE_OBJECT);
+      motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
+
+      stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
+      turnLedOff(GREEN_LED); // Turns of green LED.
+      blinkLED(RED_LED); // Red LED blinks.
+
+      zumoRobot.getDistance();
+      zumoRobot.getDistanceLeftRight(IR_LEFT_SENSOR, IR_RIGHT_SENSOR);
+      newState = zumoRobot.checkWhichStateNeeded();
+      changeStateTo(newState);
+    break;
   }
   
 }
@@ -205,13 +247,13 @@ void waitForButtonAndCountDown()
 }
 
 // Function for changing system-state.
-void changeStateTo(int newState)
+void changeStateTo(int changedState)
 {
  
    Serial.print("State changed from ");
-   (printState(currentState));
+   (printState(newState));
    Serial.print(" to ");
-   currentState = newState;
+   currentState = changedState;
    (printState(newState));
   
 }
@@ -238,6 +280,12 @@ void printState(int state)
       Serial.println("S_EVADE_OBJECT_TURN_LEFT");
     case 5:
       Serial.println("S_EVADE_OBJECT_TURN_RIGHT");
+    break;
+    case 6:
+      Serial.println("S_EVADE_CLOSE_OBJECT_TURN_LEFT");
+    break;
+    case 7:
+      Serial.println("S_EVADE_CLOSE_OBJECT_TURN_RIGHT");
     break;
   }
 }
