@@ -15,24 +15,21 @@ const int IR_RIGHT_SENSOR = A2;
 
 // LED connected to pin 13 of the zumo robot.
 #define LED 13
- 
-// this might need to be tuned for different lighting conditions, surfaces, etc.
-#define QTR_THRESHOLD  1500 // 1500 microseconds
   
 // these might need to be tuned for different motor types
 #define REVERSE_SPEED     400 // 0 is stopped, 400 is full speed.
-#define TURN_SPEED        400
-#define FORWARD_SPEED     400
-#define REVERSE_DURATION  400 // ms
-#define TURN_DURATION     400 // ms
+#define TURN_SPEED        300
+#define FORWARD_SPEED     300
+#define REVERSE_DURATION  325 // ms
+#define TURN_DURATION     325 // ms
 
-#define FREE_DRIVE_SPEED 350 // Speed during state S_FREE_DRIVE.
+#define FREE_DRIVE_SPEED 300 // Speed during state S_FREE_DRIVE.
 #define TURN_SPEED_90_DEG 275 // Speed for a 90 degree turn.
 #define TURN_DURATION_90_DEG 275 // ms
 
-#define TURN_SPEED_CLOSE_OBJECT 200 // Speed when ir-sensors detect close object.
-#define TURN_DURATION_CLOSE_OBJECT 200 // ms
-#define REVERSE_DURATION_CLOSE_OBJECT 600 // ms
+#define TURN_SPEED_CLOSE_OBJECT 150 // Speed when ir-sensors detect close object.
+#define TURN_DURATION_CLOSE_OBJECT 150 // ms
+#define REVERSE_DURATION_CLOSE_OBJECT 400 // ms
 
 
 // Defining integrated classes for the zumo robot.
@@ -53,10 +50,10 @@ const int S_EVADE_CLOSE_OBJECT_TURN_RIGHT = 7;
 // Global state variable which tells starting sytem state.
 int currentState = S_FREE_DRIVE;
 
-// Defining variable which uses the Timer-class.
+// Defining object which uses the Timer-class.
 Timer myTimer;
 
-// Defining variable which uses the robotState-class.
+// Defining object which uses the robotState-class.
 RobotState zumoRobot;
 
 // Global variable to decide which state robot needs to be in.
@@ -208,7 +205,7 @@ void loop()
 
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
       turnLedOff(GREEN_LED); // Turns of green LED.
-      blinkLED(RED_LED); // Red LED blinks.
+      //blinkLED(RED_LED); // Red LED blinks.
 
       zumoRobot.getDistance();
       zumoRobot.getDistanceLeftRight(IR_LEFT_SENSOR, IR_RIGHT_SENSOR);
@@ -226,7 +223,7 @@ void loop()
 
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
       turnLedOff(GREEN_LED); // Turns of green LED.
-      blinkLED(RED_LED); // Red LED blinks.
+      //blinkLED(RED_LED); // Red LED blinks.
 
       zumoRobot.getDistance();
       zumoRobot.getDistanceLeftRight(IR_LEFT_SENSOR, IR_RIGHT_SENSOR);

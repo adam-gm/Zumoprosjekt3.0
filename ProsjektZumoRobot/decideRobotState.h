@@ -17,7 +17,7 @@ class RobotState
     const int ECHO_PIN = A3;    
     const int IR_LEFT_SENSOR = A0;
     const int IR_RIGHT_SENSOR = A2;
-    const int QTR_THRESHOLD = 1500;//1500;
+    const int QTR_THRESHOLD = 1500;
   private:
     float chosenDistanceObject;
     float distance;
