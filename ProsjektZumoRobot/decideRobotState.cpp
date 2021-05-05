@@ -32,16 +32,6 @@ void RobotState::getDistance()
 int RobotState::checkWhichStateNeeded()
 {
   sensors->read(sensor_values);
-  /*Serial.print("distance=");
-  Serial.print(distance);
-  Serial.print("\tchosenDistanceObject=");
-  Serial.print(chosenDistanceObject);
-  Serial.print("\tQr5=");
-  Serial.print(sensor_values[5]);
-  Serial.print("Left sensor: ");
-  Serial.print(irDistanceLeft);
-  Serial.print("\tRight sensor: ");
-  Serial.print(irDistanceRight);*/
 
   if ((sensor_values[5] < QTR_THRESHOLD) and (distance > chosenDistanceObject))
   {
