@@ -53,16 +53,16 @@ int RobotState::checkWhichStateNeeded()
     robotState = 7; // S_EVADE_CLOSE_OBJECT_TURN_RIGHT
   }
   
-  else if (irDistanceLeft > 125 and irDistanceLeft < 400)
+  else if (irDistanceLeft >= 125 and irDistanceLeft < 400)
   {
     robotState = 4; // S_EVADE_OBJECT_TURN_LEFT
   }
 
-  else if (irDistanceRight > 125 and irDistanceRight < 400)
+  else if (irDistanceRight >= 125 and irDistanceRight < 400)
   {
     robotState = 5; // S_EVADE_OBJECT_TURN_RIGHT
   }
-
+  
   else if ((distance <= chosenDistanceObject) and (sensor_values[5] > QTR_THRESHOLD) and (sensor_values[0] > QTR_THRESHOLD))
   {
     robotState = 3; //S_EVADE_OBJECT

@@ -6,7 +6,7 @@
 #include "timer.h"
 #include "decideRobotState.h"
 
-// Constants defining LED_PINS
+// Constants defining unused pins
 const int GREEN_LED = 2;
 const int RED_LED = 6;
 
@@ -18,18 +18,19 @@ const int IR_RIGHT_SENSOR = A2;
   
 // these might need to be tuned for different motor types
 #define REVERSE_SPEED     400 // 0 is stopped, 400 is full speed.
-#define TURN_SPEED        350
-#define FORWARD_SPEED     350
+#define TURN_SPEED        400
+#define FORWARD_SPEED     400
 #define REVERSE_DURATION  350 // ms
-#define TURN_DURATION     300 // ms
+#define TURN_DURATION     350 // ms
 
-#define FREE_DRIVE_SPEED 300 // Speed during state S_FREE_DRIVE.
-#define TURN_SPEED_MEDIUM_OBJECT 225 // Speed for a medium ranged object.
-#define TURN_DURATION_MEDIUM_OBJECT 225 // ms
+#define FREE_DRIVE_SPEED 310 // Speed during state S_FREE_DRIVE.
+#define TURN_SPEED_90_DEG 275 // Speed for a 90 degree turn.
+#define TURN_DURATION_90_DEG 125 // ms
 
-#define TURN_SPEED_CLOSE_OBJECT 150 // Speed when ir-sensors detect close object.
-#define TURN_DURATION_CLOSE_OBJECT 100 // ms
-#define REVERSE_DURATION_CLOSE_OBJECT 450 // ms
+#define TURN_SPEED_CLOSE_OBJECT 200 // Speed when ir-sensors detect close object.
+#define TURN_DURATION_CLOSE_OBJECT 300 // ms
+#define TURN_DURATION_CLOSE_LEFT 400 // ms
+#define REVERSE_DURATION_CLOSE_OBJECT 600 // ms
 
 
 // Defining integrated classes for the zumo robot.
@@ -50,10 +51,10 @@ const int S_EVADE_CLOSE_OBJECT_TURN_RIGHT = 7;
 // Global state variable which tells starting sytem state.
 int currentState = S_FREE_DRIVE;
 
-// Defining object which uses the Timer-class.
+// Defining variable which uses the Timer-class.
 Timer myTimer;
 
-// Defining object which uses the robotState-class.
+// Defining variable which uses the robotState-class.
 RobotState zumoRobot;
 
 // Global variable to decide which state robot needs to be in.
@@ -158,12 +159,12 @@ void loop()
       changeStateTo(newState);
       
     break;
-
+    
     case S_EVADE_OBJECT_TURN_LEFT:
       motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
       delay(REVERSE_DURATION);
-      motors.setSpeeds(-TURN_SPEED_MEDIUM_OBJECT, TURN_SPEED_MEDIUM_OBJECT);
-      delay(TURN_DURATION_MEDIUM_OBJECT);
+      motors.setSpeeds(-TURN_SPEED_90_DEG, TURN_SPEED_90_DEG);
+      delay(TURN_DURATION_90_DEG);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
       
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
@@ -181,8 +182,8 @@ void loop()
     case S_EVADE_OBJECT_TURN_RIGHT:
       motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
       delay(REVERSE_DURATION);
-      motors.setSpeeds(TURN_SPEED_MEDIUM_OBJECT, -TURN_SPEED_MEDIUM_OBJECT);
-      delay(TURN_DURATION_MEDIUM_OBJECT);
+      motors.setSpeeds(TURN_SPEED_90_DEG, -TURN_SPEED_90_DEG);
+      delay(TURN_DURATION_90_DEG);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
       
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
@@ -200,7 +201,7 @@ void loop()
       motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
       delay(REVERSE_DURATION_CLOSE_OBJECT);
       motors.setSpeeds(-TURN_SPEED_CLOSE_OBJECT, TURN_SPEED_CLOSE_OBJECT);
-      delay(TURN_DURATION_CLOSE_OBJECT);
+      delay(TURN_DURATION_CLOSE_LEFT);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
 
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
