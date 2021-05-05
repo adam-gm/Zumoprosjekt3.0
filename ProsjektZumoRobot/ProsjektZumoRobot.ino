@@ -24,8 +24,8 @@ const int IR_RIGHT_SENSOR = A2;
 #define TURN_DURATION     325 // ms
 
 #define FREE_DRIVE_SPEED 300 // Speed during state S_FREE_DRIVE.
-#define TURN_SPEED_90_DEG 275 // Speed for a 90 degree turn.
-#define TURN_DURATION_90_DEG 275 // ms
+#define TURN_SPEED_MEDIUM_OBJECT 275 // Speed for a medium ranged object.
+#define TURN_DURATION_MEDIUM_OBJECT 275 // ms
 
 #define TURN_SPEED_CLOSE_OBJECT 150 // Speed when ir-sensors detect close object.
 #define TURN_DURATION_CLOSE_OBJECT 150 // ms
@@ -162,8 +162,8 @@ void loop()
     case S_EVADE_OBJECT_TURN_LEFT:
       motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
       delay(REVERSE_DURATION);
-      motors.setSpeeds(-TURN_SPEED_90_DEG, TURN_SPEED_90_DEG);
-      delay(TURN_DURATION_90_DEG);
+      motors.setSpeeds(-TURN_SPEED_MEDIUM_OBJECT, TURN_SPEED_MEDIUM_OBJECT);
+      delay(TURN_DURATION_MEDIUM_OBJECT);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
       
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
@@ -181,8 +181,8 @@ void loop()
     case S_EVADE_OBJECT_TURN_RIGHT:
       motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
       delay(REVERSE_DURATION);
-      motors.setSpeeds(TURN_SPEED_90_DEG, -TURN_SPEED_90_DEG);
-      delay(TURN_DURATION_90_DEG);
+      motors.setSpeeds(TURN_SPEED_MEDIUM_OBJECT, -TURN_SPEED_MEDIUM_OBJECT);
+      delay(TURN_DURATION_MEDIUM_OBJECT);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
       
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
