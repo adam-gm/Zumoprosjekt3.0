@@ -1,5 +1,6 @@
 #include "decideRobotState.h"
 
+// Method to initialize pins
 void RobotState::initObjectSensor()
 {
   pinMode(TRIG_PIN, OUTPUT);
@@ -8,12 +9,14 @@ void RobotState::initObjectSensor()
 
 }
 
+// Method to get distance of both infrared sensor
 void RobotState::getDistanceLeftRight(int irLeftSensorPin, int irRightSensorPin)
 {
   irDistanceLeft = analogRead(irLeftSensorPin); // This value measures distance by how high voltage get returned. The closer the object, the higher voltage returns.
   irDistanceRight = analogRead(irRightSensorPin); // This value measures distance by how high voltage get returned. The closer the object, the higher voltage returns.
 }
 
+// Method to get distance of the ultrasonic sensor
 void RobotState::getDistance()
 {
   float echoTime;
@@ -29,6 +32,7 @@ void RobotState::getDistance()
 
 }
 
+// Method to check with state the robot should be in
 int RobotState::checkWhichStateNeeded()
 {
   sensors->read(sensor_values);

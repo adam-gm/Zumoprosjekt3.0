@@ -23,13 +23,12 @@ const int IR_RIGHT_SENSOR = A2;
 #define REVERSE_DURATION  350 // ms
 #define TURN_DURATION     350 // ms
 
-#define FREE_DRIVE_SPEED 310 // Speed during state S_FREE_DRIVE.
-#define TURN_SPEED_90_DEG 275 // Speed for a 90 degree turn.
+#define FREE_DRIVE_SPEED 325 // Speed during state S_FREE_DRIVE.
+#define TURN_SPEED_90_DEG 275 // Speed when ir-sensors detects far object.
 #define TURN_DURATION_90_DEG 125 // ms
 
 #define TURN_SPEED_CLOSE_OBJECT 200 // Speed when ir-sensors detect close object.
 #define TURN_DURATION_CLOSE_OBJECT 300 // ms
-#define TURN_DURATION_CLOSE_LEFT 400 // ms
 #define REVERSE_DURATION_CLOSE_OBJECT 600 // ms
 
 
@@ -51,14 +50,14 @@ const int S_EVADE_CLOSE_OBJECT_TURN_RIGHT = 7;
 // Global state variable which tells starting sytem state.
 int currentState = S_FREE_DRIVE;
 
-// Defining variable which uses the Timer-class.
+// Global variable to hold which state robot needs to be in.
+int newState;
+
+// Defining object which uses the Timer-class.
 Timer myTimer;
 
-// Defining variable which uses the robotState-class.
+// Defining object which uses the RobotState-class.
 RobotState zumoRobot;
-
-// Global variable to decide which state robot needs to be in.
-int newState;
 
 void setup()
 {
@@ -167,8 +166,7 @@ void loop()
       delay(TURN_DURATION_90_DEG);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
       
-      stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
-     
+      stopZumoRobot(); // Opportunity to stop the robot if the button is pressed. 
       turnLedOff(GREEN_LED); // Turns off green LED.
       blinkLED(RED_LED); // Red LED blinks.
 
@@ -201,7 +199,7 @@ void loop()
       motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
       delay(REVERSE_DURATION_CLOSE_OBJECT);
       motors.setSpeeds(-TURN_SPEED_CLOSE_OBJECT, TURN_SPEED_CLOSE_OBJECT);
-      delay(TURN_DURATION_CLOSE_LEFT);
+      delay(TURN_DURATION_CLOSE_OBJECT);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
 
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
@@ -312,6 +310,7 @@ void stopZumoRobot()
   }
 }
 
+// Function to blink LED
 void blinkLED(int ledPin)
 {
   turnLedOn(ledPin);
