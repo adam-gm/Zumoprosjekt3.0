@@ -69,7 +69,7 @@ int RobotState::checkWhichStateNeeded()
   
   else if ((distance <= chosenDistanceObject) and (sensor_values[5] > QTR_THRESHOLD) and (sensor_values[0] > QTR_THRESHOLD))
   {
-    robotState = 3; //S_EVADE_OBJECT
+    robotState = 3; //S_ATTACK_OBJECT
 
   }
   

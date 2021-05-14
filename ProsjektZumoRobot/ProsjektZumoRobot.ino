@@ -2,7 +2,6 @@
 #include <ZumoMotors.h>
 #include <Pushbutton.h>
 #include <QTRSensors.h>
-#include <Servo.h>
 #include "timer.h"
 #include "decideRobotState.h"
 
@@ -41,7 +40,7 @@ Pushbutton button(ZUMO_BUTTON); // pushbutton on pin 12
 const int S_FREE_DRIVE = 0;
 const int S_TURN_LEFT = 1;
 const int S_TURN_RIGHT = 2;
-const int S_EVADE_OBJECT = 3;
+const int S_ATTACK_OBJECT = 3;
 const int S_EVADE_OBJECT_TURN_LEFT = 4;
 const int S_EVADE_OBJECT_TURN_RIGHT = 5;
 const int S_EVADE_CLOSE_OBJECT_TURN_LEFT = 6;
@@ -145,7 +144,7 @@ void loop()
       
     break;
 
-    case S_EVADE_OBJECT:
+    case S_ATTACK_OBJECT:
       motors.setSpeeds(REVERSE_SPEED, REVERSE_SPEED);
       
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
@@ -270,7 +269,7 @@ void printState(int state)
       Serial.println("S_TURN_RIGHT");
     break;
     case 3:
-      Serial.println("S_EVADE_OBJECT");
+      Serial.println("S_ATTACK_OBJECT");
     break;
     case 4:
       Serial.println("S_EVADE_OBJECT_TURN_LEFT");
