@@ -1,3 +1,4 @@
+// Including libraries
 #include <ZumoBuzzer.h>
 #include <ZumoMotors.h>
 #include <Pushbutton.h>
@@ -15,7 +16,7 @@ const int IR_RIGHT_SENSOR = A2;
 // LED connected to pin 13 of the zumo robot.
 #define LED 13
   
-// these might need to be tuned for different motor types
+// Defining motorspeeds for robot
 #define REVERSE_SPEED     400 // 0 is stopped, 400 is full speed.
 #define TURN_SPEED        400
 #define FORWARD_SPEED     400
@@ -46,7 +47,7 @@ const int S_EVADE_OBJECT_TURN_RIGHT = 5;
 const int S_EVADE_CLOSE_OBJECT_TURN_LEFT = 6;
 const int S_EVADE_CLOSE_OBJECT_TURN_RIGHT = 7;
 
-// Global state variable which tells starting sytem state.
+// Global state variable for the starting sytem state.
 int currentState = S_FREE_DRIVE;
 
 // Global variable to hold which state robot needs to be in.
@@ -60,17 +61,13 @@ RobotState zumoRobot;
 
 void setup()
 {
-  // uncomment if necessary to correct motor directions
-  //motors.flipLeftMotor(true);
-  //motors.flipRightMotor(true);
 
   Serial.begin(115200);
-  
-  zumoRobot.init();
+
   // Configure pins
+  zumoRobot.init(); // Method from RobotState-class. 
   pinMode(GREEN_LED, OUTPUT);
   pinMode(RED_LED, OUTPUT);
-
   pinMode(LED, HIGH);
   
   zumoRobot.initObjectSensor();
@@ -91,8 +88,8 @@ void loop()
       if (myTimer.hasExpired())
       {
         motors.setSpeeds(FREE_DRIVE_SPEED, FREE_DRIVE_SPEED);
-        turnLedOn(GREEN_LED);
-        turnLedOff(RED_LED);
+        turnLedOn(GREEN_LED); // Turns green LED on
+        turnLedOff(RED_LED); // Turns red LED off
        
         stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
 
@@ -115,7 +112,7 @@ void loop()
       delay(TURN_DURATION);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
       
-      turnLedOff(RED_LED); // Turns of red LED
+      turnLedOff(RED_LED); 
       blinkLED(GREEN_LED); // Green LED blinks
 
       zumoRobot.getDistance();
@@ -127,15 +124,16 @@ void loop()
     
     case S_TURN_RIGHT:
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
-      
+
+      // if leftmost sensor detects line, reverse and turn to the right
       motors.setSpeeds(-REVERSE_SPEED, -REVERSE_SPEED);
       delay(REVERSE_DURATION);
       motors.setSpeeds(TURN_SPEED, -TURN_SPEED);
       delay(TURN_DURATION);
       motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
       
-      turnLedOff(RED_LED); // Turns off red LED.
-      blinkLED(GREEN_LED); // Green LED blinks.
+      turnLedOff(RED_LED); 
+      blinkLED(GREEN_LED); 
 
       zumoRobot.getDistance();
       zumoRobot.getDistanceLeftRight(IR_LEFT_SENSOR, IR_RIGHT_SENSOR);
@@ -148,8 +146,8 @@ void loop()
       motors.setSpeeds(REVERSE_SPEED, REVERSE_SPEED);
       
       stopZumoRobot(); // Opportunity to stop the robot if the button is pressed.
-      turnLedOff(GREEN_LED); // Turns green LED off.
-      turnLedOn(RED_LED); // Turns red LED on.
+      turnLedOff(GREEN_LED); 
+      turnLedOn(RED_LED); 
       
       zumoRobot.getDistance();
       zumoRobot.getDistanceLeftRight(IR_LEFT_SENSOR, IR_RIGHT_SENSOR);
@@ -238,7 +236,7 @@ void waitForButtonAndCountDown()
 {
   button.waitForButton(); // Starts calibration for the robot if button is pressed.
   myTimer.start(5000); // Starts a 5 second timer.
-  playStartingMelody();
+  playStartingMelody(); // Play starting melody
 }
 
 // Function for changing system-state.
@@ -254,7 +252,7 @@ void changeStateTo(int changedState)
 }
 
 
-//Prints out system-state.
+//Prints out system-state in serial monitor.
 void printState(int state)
 {
   switch(state)

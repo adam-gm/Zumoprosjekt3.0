@@ -96,6 +96,5 @@ int RobotState::checkWhichStateNeeded()
 
 void RobotState::init()
 {
-  //variable to store the time it takes for a ping to bounce off an object
   chosenDistanceObject = 15;
 }
